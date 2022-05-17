@@ -17,20 +17,35 @@
     $pt = array("Alentejo", "Algarve", "Gran Lisboa", "Región de Lisboa", "Lisboa y Valle del Tajo", "Regiones Autónomas de Portugal", 
     "Región Centro (Portugal)", "Región Norte (Portugal)");
 
-	$empiezo="<pais><region>";
-	$final="</region></pais>";
+
+	$cadena = "<regiones>";
 
 	foreach ($paises as $pais) {
 		$nom = $pais->nombre;
-		$regiones = $it;//eval($nom);
+		if ($nom == "al") {
+			$regiones = $al;
+		}
+		elseif ($nom == "fr") {
+			$regiones = $fr;
+		}
+		elseif ($nom == "ig") {
+			$regiones = $ig;
+		}
+		elseif ($nom == "it") {
+			$regiones = $it;
+		}
+		elseif ($nom == "pt") {
+			$regiones = $pt;
+		}
 		foreach ($regiones as $region) {
-			$respuesta="<nombre>".$region."</nombre>";
-			
+			$cadena=$cadena."<region>".$region."</region>";
 		}
 	}
+	$final = $cadena."</regiones>";
+
 	header('Content-type:text/xml');
 	
-	echo $respuesta;
+	echo $final;
 				
 
 ?>

@@ -69,8 +69,20 @@ function procesar(){
 				// dato recibido que no es xml
 				console.log(peticion.status);
 				let misdatos=peticion.responseXML;
-				let nom=misdatos.getElementsByTagName("nombre").item(0).textContent;
-				console.log(misdatos);
-				document.getElementById("resultado").textContent=nom;		
+				let region;
+			    //obtengo el nodo de la select provincias
+				let select = document.getElementById("region");
+
+				for (let i = 0; i < misdatos.getElementsByTagName("region").length; i++) {
+					region = misdatos.getElementsByTagName("region").item(i).textContent;
+					//creo el nuevo nodo option de la select
+					let newOption = document.createElement("option");
+					//creo los nodos de texto
+					let textOption=document.createTextNode(region);
+					//asigno los nodos texto a los nodos option correspondientes
+					newOption.appendChild(textOption);
+					//asigno el nodo option al nodo select
+					select.appendChild(newOption);
+				}	
 		}
 }
