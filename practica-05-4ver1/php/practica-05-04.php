@@ -16,13 +16,16 @@
     "Lombardia", "Marche", "Molise", "Piamonte", "Puglia", "Sicilia","Toscana", "Trentino Alto Adige", "Umbria", "Valle d'Aosta", "Veneto");
     $pt = array("Alentejo", "Algarve", "Gran Lisboa", "Región de Lisboa", "Lisboa y Valle del Tajo", "Regiones Autónomas de Portugal", 
     "Región Centro (Portugal)", "Región Norte (Portugal)");
-
-
+	
+	//inicio con el elemento xml de apertura
 	$cadena = "<regiones>";
-
-	foreach ($paises as $pais) {
-		$nom = $pais->nombre;
+	//obtengo todos los nombres de los paises 
+	$nombres = $paises->pais->nombre;
+	//recorro todos los nombres de paises obtenidos
+	foreach ($nombres as $nom) {
+		//comparo su valor
 		if ($nom == "al") {
+			//asigno a la variable el valor del array correspondiente
 			$regiones = $al;
 		}
 		elseif ($nom == "fr") {
@@ -37,15 +40,16 @@
 		elseif ($nom == "pt") {
 			$regiones = $pt;
 		}
+		//recorro las regiones del array regiones obtenido
 		foreach ($regiones as $region) {
+			//concateno el nombre de todas las regiones en una cadena xml
 			$cadena=$cadena."<region>".$region."</region>";
 		}
 	}
+	//la cadena obtenida se concatena con el elemento de cierre
 	$final = $cadena."</regiones>";
 
 	header('Content-type:text/xml');
 	
 	echo $final;
-				
-
 ?>

@@ -66,23 +66,58 @@ function procesar(){
 	if (peticion.readyState==4)
 		if (peticion.status==200){
 			// tratar datos recibidos
-				// dato recibido que no es xml
+				// dato recibido que no es xml, es objeto
 				console.log(peticion.status);
 				let misdatos=peticion.responseXML;
-				let region;
+				
 			    //obtengo el nodo de la select provincias
 				let select = document.getElementById("region");
-
+				/*-------------------Borrar nodos option------------------------------*/
+				    //comprueba que mientras existe al menos un nodo hijo
+					while (select.firstChild) {
+						//borrara todos los nodos hijos
+						select.removeChild(select.firstChild)
+					}
+				/*--------------------------------------------------*/
+				let anyadido = false;
+				let options;
+				let region;
+				let pos = 0;
+				//recorro todos los nodos region obtenidos de la respuesta xml
 				for (let i = 0; i < misdatos.getElementsByTagName("region").length; i++) {
+					//obtengo los nodos option de la select
+					options = select.getElementsByTagName("option");
+					//obtengo el nombre de la region del xml en la posicion i
 					region = misdatos.getElementsByTagName("region").item(i).textContent;
-					//creo el nuevo nodo option de la select
-					let newOption = document.createElement("option");
-					//creo los nodos de texto
-					let textOption=document.createTextNode(region);
-					//asigno los nodos texto a los nodos option correspondientes
-					newOption.appendChild(textOption);
-					//asigno el nodo option al nodo select
-					select.appendChild(newOption);
+					pos = 0;
+					while (!anyadido && pos < options.length) {
+						//orden descendente
+						if (region > options.item(pos).textContent) {
+							anyadido = true;
+							//creo el nuevo nodo option de la select
+							let newOption = document.createElement("option");
+							//creo los nodos de texto
+							let textOption=document.createTextNode(region);
+							//asigno los nodos texto a los nodos option correspondientes
+							newOption.appendChild(textOption);
+							//asigno el nodo option al nodo select
+							select.insertBefore(newOption,options.item(pos));
+						
+						}
+						pos++;
+					}
+					if (!anyadido) {
+						//creo el nuevo nodo option de la select
+						let newOption = document.createElement("option");
+						//creo los nodos de texto
+						let textOption=document.createTextNode(region);
+						//asigno los nodos texto a los nodos option correspondientes
+						newOption.appendChild(textOption);
+						//asigno el nodo option al nodo select
+						select.appendChild(newOption);
+							
+					}
+					anyadido = false;
 				}	
 		}
 }
